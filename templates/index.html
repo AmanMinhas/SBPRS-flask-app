@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentiment Based Product Recommendation System</title>
+  </head>
+  <body>
+    <h1>
+      Welcome,
+    </h1>
+    <div>
+      <form id="username-form">
+        <label for="username">Username:</label><br/>
+        <input name="username" type="text" /><br />
+        <input type="submit" value="Submit" />
+      </form>
+    </div>
+    <script>
+      const formEl = document.getElementById('username-form');
+
+      function handleFormSubmit(e) {
+        e.preventDefault()
+        // alert('submitted');
+        const username = formEl.elements.username.value;
+        console.log('username ', username)
+
+        fetch(`/get-recommendations/${username}`)
+          .then(function(response) {
+            console.log('response', response)
+            return response.json();
+          })
+          .then(function(json) {
+            console.log('json ', json)
+          })
+          .catch(function(e) {
+            console.log('e ', e);
+          })
+      }
+
+      formEl.addEventListener('submit', handleFormSubmit)
+    </script>
+  </body>
+</html>
