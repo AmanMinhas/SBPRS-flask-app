@@ -12,6 +12,6 @@ def getRecommendations(username):
   return "Return recommendations here!"
 
 # run app
-app.run(debug=True)
+# app.run(debug=True)
 
 # <!-- FLASK_APP=app.py FLASK_ENV=development flask run -->
