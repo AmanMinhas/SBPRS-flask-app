@@ -13,18 +13,36 @@
     <div>
       <form id="username-form">
         <label for="username">Username:</label><br/>
-        <input name="username" type="text" /><br />
+        <input name="username" type="text" value="00sab00" /><br />
         <input type="submit" value="Submit" />
       </form>
+      <br />
+      <ul id="products-list"></ul>
     </div>
     <script>
       const formEl = document.getElementById('username-form');
+      const productListUl = document.getElementById("products-list")
+
+      function clearProductsList() {
+        productListUl.innerHTML = "";
+      }
+
+      function showProducts(products) {
+        products.forEach((product) => {
+          const li = document.createElement("li");
+          li.appendChild(document.createTextNode(product))
+          productListUl.appendChild(li)
+        })
+      }
 
       function handleFormSubmit(e) {
         e.preventDefault()
         // alert('submitted');
         const username = formEl.elements.username.value;
         console.log('username ', username)
+
+        // clear the results
+        clearProductsList()
 
         fetch(`/get-recommendations/${username}`)
           .then(function(response) {
@@ -33,6 +51,7 @@
           })
           .then(function(json) {
             console.log('json ', json)
+            showProducts(json.products)
           })
           .catch(function(e) {
             console.log('e ', e);
