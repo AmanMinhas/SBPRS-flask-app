@@ -17,14 +17,26 @@
         <input type="submit" value="Submit" />
       </form>
       <br />
+      <p id="loading" style="display: none;">Loading...</p>
       <ul id="products-list"></ul>
     </div>
     <script>
       const formEl = document.getElementById('username-form');
+      const loadingEl = document.getElementById("loading");
       const productListUl = document.getElementById("products-list")
 
       function clearProductsList() {
         productListUl.innerHTML = "";
+      }
+
+      function showLoadingDocuments() {
+        clearProductsList();
+        loadingEl.style.display = "block"
+      }
+
+      function hideLoadingDocuments() {
+        clearProductsList();
+        loadingEl.style.display = "none"
       }
 
       function showProducts(products) {
@@ -41,8 +53,7 @@
         const username = formEl.elements.username.value;
         console.log('username ', username)
 
-        // clear the results
-        clearProductsList()
+        showLoadingDocuments();
 
         fetch(`/get-recommendations/${username}`)
           .then(function(response) {
