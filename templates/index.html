@@ -4,42 +4,59 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" type="text/css" href="/style.css" /> -->
+    <link href='https://fonts.googleapis.com/css?family=Open Sans' rel='stylesheet'>
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='style.css') }}">
     <title>Sentiment Based Product Recommendation System</title>
   </head>
   <body>
-    <h1>
-      Welcome,
-    </h1>
-    <div>
-      <form id="username-form">
-        <label for="username">Username:</label><br/>
-        <input name="username" type="text" value="00sab00" /><br />
-        <input type="submit" value="Submit" />
-      </form>
-      <br />
-      <p id="loading" style="display: none;">Loading...</p>
-      <ul id="products-list"></ul>
+    <div class="body-container">
+      <div class="center-container">
+        <div class="header-container">
+          <h1>SENTIMENT BASED</h1>
+          <h1>PRODUCT RECOMMENDATION SYSTEM</h1>
+        </div>
+        <div class="form-container">
+          <form id="username-form">
+            <!-- <label for="username">Username</label><br/> -->
+            <input name="username" placeholder="Enter Username" type="text" value="00sab00" /><br />
+            <button type="submit" class="btn">Submit</button>
+          </form>
+        </div>
+        <div id="loading" class="loading">
+          Loading...
+        </div>
+        <div id="products-container" class="products-container">
+          <h2>Top 5 Products</h2>
+          <ul id="product-list" class="product-list"></ul>
+        </div>
+      </div>
     </div>
     <script>
+      // css ref : https://colorlib.com/etc/lf/Login_v20/index.html
+
       const formEl = document.getElementById('username-form');
       const loadingEl = document.getElementById("loading");
-      const productListUl = document.getElementById("products-list")
+      const productsContainerEl = document.getElementById("products-container");
+      const productListUl = document.getElementById("product-list");
 
-      function clearProductsList() {
-        productListUl.innerHTML = "";
+      function resetProducts() {
+        productsContainerEl.style.display = "none"
+        productListUl.innerHTML=""
       }
 
       function showLoadingDocuments() {
-        clearProductsList();
-        loadingEl.style.display = "block"
+        loadingEl.style.display = "flex"
+        resetProducts();
       }
 
       function hideLoadingDocuments() {
-        clearProductsList();
         loadingEl.style.display = "none"
       }
 
       function showProducts(products) {
+        productsContainerEl.style.display = "block"
+
         products.forEach((product) => {
           const li = document.createElement("li");
           li.appendChild(document.createTextNode(product))
@@ -49,24 +66,30 @@
 
       function handleFormSubmit(e) {
         e.preventDefault()
-        // alert('submitted');
-        const username = formEl.elements.username.value;
-        console.log('username ', username)
+        try {
 
-        showLoadingDocuments();
-
-        fetch(`/get-recommendations/${username}`)
-          .then(function(response) {
-            console.log('response', response)
-            return response.json();
-          })
-          .then(function(json) {
-            console.log('json ', json)
-            showProducts(json.products)
-          })
-          .catch(function(e) {
-            console.log('e ', e);
-          })
+          // alert('submitted');
+          const username = formEl.elements.username.value;
+          console.log('username ', username)
+  
+          showLoadingDocuments();
+  
+          fetch(`/get-recommendations/${username}`)
+            .then(function(response) {
+              console.log('response', response)
+              return response.json();
+            })
+            .then(function(json) {
+              console.log('json ', json)
+              hideLoadingDocuments();
+              showProducts(json.products);
+            })
+            .catch(function(e) {
+              console.log('e ', e);
+            })
+        } catch (e) {
+          console.warn('Error ', e.message)
+        }
       }
 
       formEl.addEventListener('submit', handleFormSubmit)
