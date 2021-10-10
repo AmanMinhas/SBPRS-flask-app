@@ -27,7 +27,7 @@ class RecommendationSystem():
     # Create a lemmatizer
     self.lemmatizer = WordNetLemmatizer()
 
-  def get_top_20_recommendations_2(self, username):
+  def get_top_5_recommendations_2(self, username):
     """
       This function uses the product_sentiment_score_df dataframe which was precreated from the notebook and uses it for sorting recommendations
     """
@@ -44,9 +44,9 @@ class RecommendationSystem():
     print('top_20_products_sorted_list')
     print(top_20_products_sorted_list)
 
-    return top_20_products_sorted_list
+    return top_20_products_sorted_list[:5]
 
-  def get_top_20_recommendations(self, username):
+  def get_top_5_recommendations(self, username):
     # 1. Get top 20 recommendations
     top_20_product_recommendations = self.recommendation_system.loc[username].sort_values(ascending=False)[0:20]
     top_20_product_recommendations_list = top_20_product_recommendations.index.tolist()

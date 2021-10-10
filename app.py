@@ -12,7 +12,8 @@ def getRecommendations(username):
   print('---- USERNAME ', username);
   # return "Return recommendations here!"
   recommendation_system = RecommendationSystem()
-  recommended_products = recommendation_system.get_top_20_recommendations(username)
+  # recommended_products = recommendation_system.get_top_5_recommendations(username)
+  recommended_products = recommendation_system.get_top_5_recommendations_2(username)
 
   return jsonify({"products": recommended_products})
 # run app
