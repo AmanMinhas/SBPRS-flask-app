@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <link rel="stylesheet" type="text/css" href="/style.css" /> -->
     <link href='https://fonts.googleapis.com/css?family=Open Sans' rel='stylesheet'>
     <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='style.css') }}">
     <title>Sentiment Based Product Recommendation System</title>
@@ -18,14 +17,10 @@
         </div>
         <div class="form-container">
           <form id="username-form">
-            <!-- <label for="username">Username</label><br/> -->
             <input name="username" placeholder="Enter Username" type="text" value="00sab00" /><br />
             <button type="submit" class="btn">Submit</button>
           </form>
         </div>
-        <!-- <div id="loading" class="loading">
-          Loading...
-        </div> -->
         <div id="loading" class="loading">
           <div class="dot-flashing"></div>
         </div>
@@ -36,8 +31,6 @@
       </div>
     </div>
     <script>
-      // css ref : https://colorlib.com/etc/lf/Login_v20/index.html
-
       const formEl = document.getElementById('username-form');
       const loadingEl = document.getElementById("loading");
       const productsContainerEl = document.getElementById("products-container");
@@ -70,8 +63,6 @@
       function handleFormSubmit(e) {
         e.preventDefault()
         try {
-
-          // alert('submitted');
           const username = formEl.elements.username.value;
           console.log('username ', username)
   
@@ -92,6 +83,7 @@
             })
         } catch (e) {
           console.warn('Error ', e.message)
+          hideLoadingDocuments();
         }
       }
 

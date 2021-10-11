@@ -77,11 +77,6 @@ body {
   display: none;
 }
 
-@keyframes shine {
-  from { background-position-x: 0%; }
-  to { background-position-x: -200%; }
-}
-
 .dot-flashing {
   position: relative;
   width: 10px;
