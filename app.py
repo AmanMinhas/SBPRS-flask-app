@@ -10,9 +10,7 @@ def index():
 @app.route("/get-recommendations/<username>", methods=['GET'])
 def getRecommendations(username):
   print('---- USERNAME ', username);
-  # return "Return recommendations here!"
   recommendation_system = RecommendationSystem()
-  # recommended_products = recommendation_system.get_top_5_recommendations(username)
   recommended_products = recommendation_system.get_top_5_recommendations(username)
 
   return jsonify({"products": recommended_products})
