@@ -11,7 +11,12 @@ def index():
 def getRecommendations(username):
   print('---- USERNAME ', username);
   recommendation_system = RecommendationSystem()
-  recommended_products = recommendation_system.get_top_5_recommendations(username)
+  recommended_products, error = recommendation_system.get_top_5_recommendations(username)
+
+  if (error):
+    err_response = jsonify({"error": error})
+    err_response.status_code = 400
+    return err_response
 
   return jsonify({"products": recommended_products})
 # run app

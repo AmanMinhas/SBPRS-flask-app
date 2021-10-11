@@ -45,7 +45,7 @@ body {
 
 .form-container input {
   width: 100%;
-  padding: 12px 8px;
+  padding: 18px 8px;
   color: gray;
   border: none;
   box-sizing: border-box;
@@ -55,7 +55,7 @@ body {
 
 .form-container .btn {
   width: 100%;
-  padding: 12px;
+  padding: 18px;
   text-align: center;
   background-color: black;
   color: #fefefe;
@@ -147,4 +147,25 @@ body {
   border-radius: 8px;
   font-size: 14px;
   color: #2f4f4f;
+  border-bottom: 4px solid black;
+}
+
+.error-container {
+  padding: 16px;
+  margin: 24px 0;
+}
+
+.hide-error-container {
+  display: none;
+}
+
+.show-error-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background-color: #eeb7b7;
+  border: 1px solid red;
+  border-radius: 8px;
+  font-size: 14px;
 }

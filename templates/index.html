@@ -24,6 +24,7 @@
         <div id="loading" class="loading">
           <div class="dot-flashing"></div>
         </div>
+        <div id="error-container" class="error-container hide-error-container"></div>
         <div id="products-container" class="products-container">
           <h2>Top 5 Products</h2>
           <ul id="product-list" class="product-list"></ul>
@@ -33,6 +34,7 @@
     <script>
       const formEl = document.getElementById('username-form');
       const loadingEl = document.getElementById("loading");
+      const errorContainerEl = document.getElementById("error-container");
       const productsContainerEl = document.getElementById("products-container");
       const productListUl = document.getElementById("product-list");
 
@@ -48,6 +50,17 @@
 
       function hideLoadingDocuments() {
         loadingEl.style.display = "none"
+      }
+
+      function hideErrorContainer() {
+        errorContainerEl.classList.add('hide-error-container')
+        errorContainerEl.classList.remove('show-error-container')
+      }
+
+      function showErrorContainer(errorMessage) {
+        errorContainerEl.innerText = errorMessage;
+        errorContainerEl.classList.remove('hide-error-container')
+        errorContainerEl.classList.add('show-error-container')
       }
 
       function showProducts(products) {
@@ -67,6 +80,7 @@
           console.log('username ', username)
   
           showLoadingDocuments();
+          hideErrorContainer()
   
           fetch(`/get-recommendations/${username}`)
             .then(function(response) {
@@ -74,16 +88,23 @@
               return response.json();
             })
             .then(function(json) {
+              // check for error
+              if (json.error) throw new Error(json.error)
+              return json;
+            })
+            .then(function(json) {
               console.log('json ', json)
               hideLoadingDocuments();
               showProducts(json.products);
             })
             .catch(function(e) {
-              console.log('e ', e);
+              hideLoadingDocuments();
+              const errorMsg = e.message
+              console.log('e ', errorMsg);
+              showErrorContainer(errorMsg)
             })
         } catch (e) {
           console.warn('Error ', e.message)
-          hideLoadingDocuments();
         }
       }
 
