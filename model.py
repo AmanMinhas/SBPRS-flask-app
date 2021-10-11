@@ -27,7 +27,7 @@ class RecommendationSystem():
     # Create a lemmatizer
     self.lemmatizer = WordNetLemmatizer()
 
-  def get_top_5_recommendations_2(self, username):
+  def get_top_5_recommendations_3(self, username):
     """
       This function uses the product_sentiment_score_df dataframe which was precreated from the notebook and uses it for sorting recommendations
     """
@@ -46,7 +46,7 @@ class RecommendationSystem():
 
     return top_20_products_sorted_list[:5]
 
-  def get_top_5_recommendations(self, username):
+  def get_top_5_recommendations_2(self, username):
     # 1. Get top 20 recommendations
     top_20_product_recommendations = self.recommendation_system.loc[username].sort_values(ascending=False)[0:20]
     top_20_product_recommendations_list = top_20_product_recommendations.index.tolist()
@@ -75,4 +75,44 @@ class RecommendationSystem():
     print("top_products_list :")
     print(top_products_list)
 
+    return top_products_list[:5]
+
+  def get_top_5_recommendations(self, username):
+    # 1. Get top 20 recommendations
+    top_20_product_recommendations = self.recommendation_system.loc[username].sort_values(ascending=False)[0:20]
+    top_20_product_recommendations_list = top_20_product_recommendations.index.tolist()
+    print('top_20_product_recommendations_list :')
+    print(top_20_product_recommendations_list)
+    
+    # 2. Preprocess all reviews for top 20 products
+    # print("Proprocessing documents")
+
+    sentiment_score_list = []
+
+    print("Starting Loop")
+    for product in top_20_product_recommendations_list:
+      print("Vector Transforming")
+      products_reviews_df = self.og_ratings_df[self.og_ratings_df.name == product][['name', 'reviews_title', 'reviews_text']]
+      reviews_tfidf_model = self.vectorizer_pickle.transform(products_reviews_df['reviews_text'])
+      reviews_tfidf_df = pd.DataFrame(reviews_tfidf_model.toarray(), columns = self.vectorizer_pickle.get_feature_names())
+
+      cutoff = 0.45
+      print("Making Prediction")
+      sentiment_prob_list = self.sentiment_analysis_model.predict_proba(reviews_tfidf_df)[:, 1]
+      sentiment_pred_list = list(map(lambda x: 1 if x >= cutoff else 0, sentiment_prob_list));
+      sentiment_score = sum(sentiment_pred_list)/len(sentiment_prob_list);
+      sentiment_score_list.append(sentiment_score)
+      # products_reviews_df["pos_sentiment_prob"] = self.sentiment_analysis_model.predict_proba(reviews_tfidf_df)[:, 1]
+      # products_reviews_df["sentiment_pred"] = products_reviews_df['pos_sentiment_prob'].map(lambda x: 1 if x >= cutoff else 0)
+
+    print('Loop ended')
+
+    product_sentiment_score_df = pd.DataFrame(data = {
+      "product": top_20_product_recommendations_list,
+      "sentiment_score": sentiment_score_list,
+    })
+
+    top_products_list = product_sentiment_score_df.sort_values(by="sentiment_score", ascending=False)['product'].tolist()
+    print('top_products_list')
+    print(top_products_list)
     return top_products_list[:5]
