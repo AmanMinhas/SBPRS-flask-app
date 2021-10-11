@@ -1,13 +1,9 @@
 import pandas as pd
 import pickle
-import string
 import nltk
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
-# nltk.download('punkt')
-# nltk.download('stopwords')
-# nltk.download('wordnet')
 
 class RecommendationSystem():
   def __init__(self):
@@ -111,8 +107,6 @@ class RecommendationSystem():
       sentiment_pred_list = list(map(lambda x: 1 if x >= cutoff else 0, sentiment_prob_list));
       sentiment_score = sum(sentiment_pred_list)/len(sentiment_prob_list);
       sentiment_score_list.append(sentiment_score)
-      # products_reviews_df["pos_sentiment_prob"] = self.sentiment_analysis_model.predict_proba(reviews_tfidf_df)[:, 1]
-      # products_reviews_df["sentiment_pred"] = products_reviews_df['pos_sentiment_prob'].map(lambda x: 1 if x >= cutoff else 0)
 
     print('Loop ended')
 
